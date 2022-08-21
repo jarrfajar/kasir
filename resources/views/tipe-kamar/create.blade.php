@@ -47,7 +47,7 @@
                         <div class="col-12">
                             <div class="d-flex justify-content-end">
                                 <a href="{{ route('tipe-kamar') }}" class="btn btn-warning mt-5 mx-2">Batal</a>
-                                <button class="btn btn-primary mt-5">Tambah Kamar</button>
+                                <button class="btn btn-primary mt-5">Tambah Tipe Kamar</button>
                             </div>
                         </div>
                     </div>

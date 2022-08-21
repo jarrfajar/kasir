@@ -61,7 +61,7 @@
                                             <tr>
                                                 <td>{{ $key->tamu->nama }}</td>
                                                 <td>{{ $key->kamar_id }}</td>
-                                                <td>{{ $key->check_in }}</td>
+                                                <td>{{ $key->check_in }} | {{ $key->check_in_jam }}</td>
                                                 {{-- <td>{{ $key->tamu->status }}</td> --}}
                                             </tr>
                                         @endif
@@ -83,7 +83,6 @@
                                         <th>Nama</th>
                                         <th>Kamar</th>
                                         <th>Check Out</th>
-                                        <th>Jam</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -92,8 +91,7 @@
                                             <tr>
                                                 <td >{{ $key->tamu->nama }}</td>
                                                 <td>{{ $key->kamar_id }}</td>
-                                                <td>{{ $key->check_out }}</td>
-                                                <td class="fw-bold">{{ $key->check_out_jam }}</td>
+                                                <td>{{ $key->check_out }} | {{ $key->check_out_jam }}</td>
                                             </tr>
                                         @endif
                                     @endforeach

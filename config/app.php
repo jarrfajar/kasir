@@ -179,6 +179,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\MinikalServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -232,6 +233,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Minikal' => App\Helpers\Minikal::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

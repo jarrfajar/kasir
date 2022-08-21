@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h3 class="font-semibold text-xl text-gray-800 leading-tight">
-            CHECK IN
+            UBAH CHECK IN
         </h3>
         @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
@@ -21,10 +21,11 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5>Nomor Kamar : {{ $kamar }}</h5>
+                <h5>Nomor Kamar : {{ $tamu->kamar_id }}</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('check-in.store') }}" method="post">
+                <form action="{{ route('tamu.extendUpdate', $tamu->id) }}" method="post">
+                    @method('put')
                     @csrf
                     <div class="row">
                         <div class="col">
@@ -33,8 +34,8 @@
                                     <h6># INVOICE</h5>
                                         <div class="row">
                                             <div class="col">
-                                                <input type="hidden" name="kamar_id" value="{{ $kamar }}">
-                                                <input type="text" class="form-control" value="{{ $inv }}"
+                                                <input type="hidden" name="kamar_id" value="{{ $tamu->kamar_id }}">
+                                                <input type="text" class="form-control" value="{{ $tamu->invoice }}"
                                                     name="invoice" id="invoice" readonly>
                                                 @error('invoice')
                                                     <div class="text-danger">
@@ -48,16 +49,8 @@
                                     <h6>Nama Tamu</h5>
                                         <div class="row">
                                             <div class="col">
-                                                <select class="choices form-select" name="tamu_id" id="tamu_id"
-                                                    aria-label="Default select example">
-                                                    <option disabled selected>-PilihTamu-</option>
-                                                    <optgroup label="Pilih Tamu">
-                                                        @foreach ($tamu as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->nama }}
-                                                            </option>
-                                                        @endforeach
-                                                    </optgroup>
-                                                </select>
+                                                <input type="text" class="form-control"
+                                                    value="{{ $tamu->tamu->nama }}" readonly>
                                             </div>
                                         </div>
                                 </div>
@@ -80,6 +73,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col">
                             <div class="row mb-3">
                                 <div class="col">
@@ -99,21 +93,14 @@
                                         <div>
                                             <select class="form-select" name="harga" id="harga"
                                                 onchange="fakultas()" aria-label="Default select example">
-                                                @if ($price->tipe_kamar->tipe_kamar == 'VIP')
-                                                    <option disabled selected>-Pilih Paket-</option>
-                                                    <option value="{{ $price->malam }}">Paket Permalam</option>
+                                                @if ($tamu->paket == 'Paket Permalam')
+                                                    <option selected value="{{ $price->malam }}">Paket Permalam
+                                                    </option>
                                                 @else
-                                                    <option disabled selected>-Pilih Paket-</option>
+                                                    <option selected value="{{ $price->jam }}">Paket 4 jam</option>
                                                     <option value="{{ $price->malam }}">Paket Permalam</option>
-                                                    <option value="{{ $price->jam }}">Paket 4 jam</option>
                                                 @endif
                                             </select>
-                                            {{-- <select class="form-select" name="harga" id="harga"
-                                                onchange="fakultas()" aria-label="Default select example">
-                                                <option disabled selected>-Pilih Paket-</option>
-                                                <option value="{{ $price->malam }}">Paket Permalam</option>
-                                                <option @if ($price->tipe_kamar->tipe_kamar == 'VIP') disabled @endif value="{{ $price->jam }}">Paket 4 jam</option>
-                                            </select> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -124,8 +111,12 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                <input type="datetime-local" class="form-control bg-white"
-                                                    name="check_in" id="check_in" placeholder="Pilih Tanggal" readonly>
+                                                {{-- <input type="text" class="form-control bg-white" name="check_in"
+                                                    id="check_in" placeholder="Pilih Tanggal"
+                                                    value="{{ $tamu->check_in }}" readonly> --}}
+                                                <input type="text" class="form-control"
+                                                    value="{{ $tamu->check_in }}" name="check_in" id="check_in"
+                                                    readonly>
                                                 @error('check_in')
                                                     <div class="text-danger">
                                                         {{ 'Nomor kamar harus diisi' }}
@@ -137,8 +128,9 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col">
-                                                <input type="text" class="form-control" value="{{ $time }}"
-                                                    name="check_in_jam" id="check_in_jam" readonly>
+                                                <input type="text" class="form-control"
+                                                    value="{{ $tamu->check_in_jam }}" name="check_in_jam"
+                                                    id="check_in_jam" readonly>
                                                 @error('check_in_jam')
                                                     <div class="text-danger">
                                                         {{ 'Nomor kamar harus diisi' }}
@@ -153,9 +145,11 @@
                                         <div class="col">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input type="datetime-local" class="form-control bg-white"
-                                                        name="check_out" id="paket_check_out"
-                                                        placeholder="Pilih Tanggal">
+                                                    <input type="text" class="form-control bg-white" name="check_out"
+                                                        id="paket_check_out" placeholder="Pilih Tanggal"
+                                                        value="{{ $tamu->check_out }}" readonly>
+                                                    <input type="hidden" id="paket_check_out_hidden"
+                                                        value="{{ $tamu->check_out }}">
                                                     @error('check_out')
                                                         <div class="text-danger">
                                                             {{ $message }}
@@ -168,8 +162,10 @@
                                             <div class="row">
                                                 <div class="col">
                                                     <input type="text" class="form-control"
-                                                        value="{{ $time }}" name="check_out_jam"
+                                                        value="{{ $tamu->check_out_jam }}" name="check_out_jam"
                                                         id="check_out_jam" readonly>
+                                                    <input type="hidden" id="check_out_jam_hidden"
+                                                        value="{{ $tamu->check_out_jam }}">
                                                     @error('check_out_jam')
                                                         <div class="text-danger">
                                                             {{ 'Nomor kamar harus diisi' }}
@@ -184,7 +180,7 @@
                                             <div class="d-flex justify-content-end">
                                                 <a href="{{ route('check-in') }}"
                                                     class="btn btn-warning mt-5 mx-2">Batal</a>
-                                                <button class="btn btn-primary mt-5">Check In</button>
+                                                <button class="btn btn-primary mt-5">Update</button>
                                             </div>
                                         </div>
                                     </div>
@@ -194,7 +190,7 @@
             </div>
         </div>
     </section>
-    @push('scripts')
+    @push('scripts')        
         <script>
             // document.getElementById('check_out_jam').value='13:00'
             flatpickr("#check_in", {
@@ -203,30 +199,10 @@
                 enable: [new Date()],
             });
 
-            flatpickr("#paket_check_out", {
-                dateFormat: "d-m-Y",
-            });
-        </script>
-        <script type="text/javascript">
-            function fakultas() {
+            window.addEventListener('load', function() {
                 var data = document.getElementById('harga')
                 var text = data.options[data.selectedIndex].text;
                 document.getElementById('paket').value = text;
-
-                if (text == 'Paket 4 jam') {
-                    var today = new Date();
-                    today.setHours(today.getHours() + 4);
-                    let date = today.toString().slice(4, 15);
-                    tanggal = flatpickr.formatDate(today, "d-m-Y");
-                    jam = flatpickr.formatDate(today, "H:i");
-                    document.getElementById('paket_check_out');
-                    var calendar = flatpickr("#paket_check_out");
-                    calendar.destroy();
-                    calendar.input.type = 'text'
-                    document.getElementById('check_out_jam').value = jam
-                    document.getElementById('paket_check_out').value = tanggal;
-                    document.getElementById('paket_check_out').readOnly = true;
-                }
                 if (text == 'Paket Permalam') {
                     var minDate = new Date();
                     minDate.setDate(minDate.getDate() + 1);
@@ -234,8 +210,34 @@
                         dateFormat: "d-m-Y",
                         minDate: minDate
                     });
-                    var chekJam = document.getElementById('check_in_jam').value;
-                    document.getElementById('check_out_jam').value = chekJam
+                }
+            })
+        </script>
+        <script type="text/javascript">
+            function fakultas() {
+                var data = document.getElementById('harga')
+                var text = data.options[data.selectedIndex].text;
+                document.getElementById('paket').value = text;
+
+                if (text == 'Paket Permalam') {
+                    var minDate = new Date();
+                    minDate.setDate(minDate.getDate() + 1);
+                    flatpickr("#paket_check_out", {
+                        dateFormat: "d-m-Y",
+                        minDate: minDate
+                    });
+                    let test = document.getElementById('check_in_jam').value;
+                    document.getElementById('check_out_jam').value = test;
+                    document.getElementById('paket_check_out').value = '';
+                }
+
+                if (text == 'Paket 4 jam') {
+                    var calendar = flatpickr("#paket_check_out");
+                    calendar.destroy();
+                    let checkOutJam = document.getElementById('paket_check_out_hidden').value;
+                    document.getElementById('paket_check_out').value = checkOutJam;
+                    let checkInJam = document.getElementById('check_out_jam_hidden').value;
+                    document.getElementById('check_out_jam').value = checkInJam;
                 }
             }
         </script>

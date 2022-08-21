@@ -32,23 +32,23 @@ class KamarController extends Controller
         return redirect()->route('kamar')->with('success', 'Kamar berhasil ditambahkan');
     }
 
-    // public function edit($id)
-    // {
-    //     $kamar = Kamar::findOrFail($id);
-    //     $tipe_kamar = TipeKamar::all();
-    //     return view('kamar.edit', compact('kamar', 'tipe_kamar'));
-    // }
+    public function edit($id)
+    {
+        $kamar = Kamar::findOrFail($id);
+        $tipe_kamar = TipeKamar::all();
+        return view('kamar.update', ['kamar' => $kamar, 'tipe_kamar' => $tipe_kamar]);
+    }
 
-    // public function update(Request $request, $id)
-    // {
-    //     $attr = $request->validate([
-    //         'kode_kamar' => 'required',
-    //         'tipe_kamar_id' => 'required',
-    //         'status' => 'required',
-    //     ]);
-    //     Kamar::whereId($id)->update($attr);
-    //     return redirect()->route('kamar')->with('success', 'Kamar berhasil diubah');
-    // }
+    public function update(Request $request, $id)
+    {
+        $attr = $request->validate([
+            'kode_kamar' => 'required',
+            'tipe_kamar_id' => 'required',
+            'status' => 'required',
+        ]);
+        Kamar::whereId($id)->update($attr);
+        return redirect()->route('kamar')->with('update', 'Kamar berhasil diubah');
+    }
 
     public function destroy($id)
     {

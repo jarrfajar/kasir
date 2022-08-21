@@ -40,7 +40,7 @@
                                     <td>{{ $keys->name }}</td>
                                 @endforeach
                                 <td>
-                                    <a href="{{ route('tamu.update',$key->id) }}" class="btn btn-warning btn-sm ms-2">
+                                    <a href="{{ route('userC.edit',$key->id) }}" class="btn btn-warning btn-sm ms-2">
                                         <i class="fa-solid fa-pencil"></i>
                                     </a>
                                     <button type="submit" class="btn btn-danger btn-sm ms-2 delete" data-id='{{ $key->id }}' data-nama='{{ $key->kode_kamar }}'>

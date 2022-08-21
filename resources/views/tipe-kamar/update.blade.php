@@ -26,15 +26,15 @@
                             <h6>Harga Kamar</h5>
                                 <div class="row">
                                     <div class="col">
-                                        <input type="text" type-currency="IDR" class="form-control" value="{{ old('harga') ?? $tipe_kamar->harga }}" name="harga" id="harga" placeholder="Paket Permalam">
-                                        @error('harga')
+                                        <input type="text" type-currency="IDR" class="form-control" value="{{ old('malam') ?? $price->malam }}" name="malam" id="malam" placeholder="Paket Permalam">
+                                        @error('malam')
                                             <div class="text-danger">
                                                 {{ 'Paket Permalam wajib diisi' }}
                                             </div>
                                         @enderror
                                     </div>
                                     <div class="col">
-                                        <input type="text" type-currency="IDR" class="form-control" value="{{ old('jam') ?? $tipe_kamar->jam }}" name="jam" id="jam" placeholder="Paket 4 Jam">
+                                        <input type="text" type-currency="IDR" class="form-control" value="{{ old('jam') ?? $price->jam }}" name="jam" id="jam" placeholder="Paket 4 Jam">
                                         @error('jam')
                                             <div class="text-danger">
                                                 {{ 'Paket 4 Jam wajib diisi' }}

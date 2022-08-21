@@ -20,7 +20,7 @@
                                         <input type="text" class="form-control" value="{{ old('nik') }}" name="nik" id="nik" placeholder="NIK">
                                         @error('nik')
                                             <div class="text-danger">
-                                                {{ 'Nik harus diisi' }}
+                                                {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
@@ -31,7 +31,7 @@
                                     <input type="text" class="form-control" value="{{ old('nama') }}" name="nama" id="nama" placeholder="Nama Lengkap">
                                     @error('nama')
                                         <div class="text-danger">
-                                            {{ 'Nama harus diisi' }}
+                                            {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
@@ -47,9 +47,9 @@
                             <div class="row">
                                 <div class="col">
                                     <input type="text" class="form-control" value="{{ old('kab_kota') }}" name="kab_kota" id="kab_kota" placeholder="Kabupaten/Kota">
-                                    @error('kab/kota')
+                                    @error('kab_kota')
                                         <div class="text-danger">
-                                            {{ 'Kab/Kota harus diisi' }}
+                                            {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
@@ -57,7 +57,7 @@
                                     <input type="datetime-local" class="form-control bg-white" value="{{ old('tgl_lahir') }}" name="tgl_lahir" id="tgl_lahir" placeholder="Pilih Tanggal">
                                     @error('tgl_lahir')
                                         <div class="text-danger">
-                                            {{ 'Tanggal Lahir harus diisi' }}
+                                            {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
@@ -75,14 +75,19 @@
                             <input type="text" class="form-control" value="{{ old('pekerjaan') }}" id="pekerjaan" name="pekerjaan" placeholder="Pekerjaan">
                             @error('pekerjaan')
                                 <div class="text-danger">
-                                    {{ 'Pekerjaan harus diisi' }}
+                                    {{ $message }}
                                 </div>
                             @enderror
                         </div>
                         <div class="col">
                             <h6>Alamat</h5>
                             <textarea class="form-control mb-3" id="alamat" name="alamat" rows="3" placeholder="Alamat Lengkap">{{ old('alamat') }}</textarea>
-                            <div class="row">
+                            @error('alamat')
+                                <div class="text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                            {{-- <div class="row">
                                 <div class="col">
                                     <input type="text" class="form-control" value="{{ old('kecamatan') }}" id="kecamatan" name="kecamatan" placeholder="Kecamatan">
                                     @error('kecamatan')
@@ -107,7 +112,7 @@
                                         </div>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
                             <h6 class="mt-3">Warga Negara</h5>
                                 <select class="form-select" name="warga_negara" aria-label="Default select example">{{ old('warga_negara') }}
                                     <option disabled selected>Warga Negara</option>
@@ -118,7 +123,7 @@
                             <input type="text" class="form-control" value="{{ old('nomor') }}" id="nomor" name="nomor" placeholder="Nomor Telepon">
                             @error('nomor')
                                 <div class="text-danger">
-                                    {{ 'Nomor harus diisi' }}
+                                    {{ $message }}
                                 </div>
                             @enderror
                         </div>

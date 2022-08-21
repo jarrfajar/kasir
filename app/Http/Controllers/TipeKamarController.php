@@ -48,20 +48,37 @@ class TipeKamarController extends Controller
     public function update($id)
     {
         $tipe_kamar = TipeKamar::findOrFail($id);
+        $price = Price::where('tipe_kamar_id', $id)->first();
         
-        return view('tipe-kamar.update', compact('tipe_kamar'));
+        return view('tipe-kamar.update', ['tipe_kamar' => $tipe_kamar, 'price' => $price]);
     }
 
     public function edit(Request $request, $id)
     {
         $tipe_kamar = TipeKamar::findOrFail($id);
-        $attr = $request->validate([
+        $request->validate([
             'tipe_kamar' => 'required',
-            'harga' => 'required',
+            'malam' => 'required',
             'jam' => 'required',
         ]);
-        $tipe_kamar->update($attr);
-        return redirect()->route('tipe-kamar')->with('success', 'Tipe Kamar berhasil diubah');
+
+        $tipe_kamar->update([
+            'tipe_kamar' => $request->tipe_kamar,
+        ]);
+
+        $price = Price::where('tipe_kamar_id', $id)->first();
+        $price->update([
+            'malam' => $request->malam,
+            'jam' => $request->jam,
+        ]);
+        return redirect()->route('tipe-kamar')->with('update', 'Tipe Kamar berhasil diubah');
+    }
+
+    public function destroy($id)
+    {
+        $tipe_kamar = TipeKamar::findOrFail($id);
+        $tipe_kamar->delete();
+        return redirect()->route('tipe-kamar')->with('success', 'Tipe Kamar berhasil dihapus');
     }
 }
 

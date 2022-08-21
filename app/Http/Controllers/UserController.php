@@ -28,7 +28,6 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'role' => 'required|string|max:20',
         ]);
-        // dd($request->role);
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -37,5 +36,12 @@ class UserController extends Controller
         $user->role = $user->assignRole($request->role);
         
         return redirect()->route('userC')->with('success','User berhasil ditambahkan');
+    }
+
+    public function edit($id){
+        $user = User::findOrFail($id);
+        return view('user.update',[
+            'users'=>$user,
+        ]);
     }
 }
